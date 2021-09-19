@@ -4,17 +4,28 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class Activity {
+public class Activity implements Comparable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
 
+    String name;
+
     LocalDateTime startTime;
     LocalDateTime endTime;
 
-    @ManyToOne
-    Activity activity;
+    public Activity(String name, LocalDateTime startTime, LocalDateTime endTime) {
+        this.name = name;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
+    public Activity() {
+    }
+
+    //    @ManyToOne
+//    Activity activity;
 
     public long getId() {
         return id;
@@ -40,11 +51,30 @@ public class Activity {
         this.endTime = endTime;
     }
 
-    public Activity getActivity() {
-        return activity;
+//    public Activity getActivity() {
+//        return activity;
+//    }
+//
+//    public void setActivity(Activity activity) {
+//        this.activity = activity;
+//    }
+
+    public String getName() {
+        return name;
     }
 
-    public void setActivity(Activity activity) {
-        this.activity = activity;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(o instanceof Activity){
+            Activity activity = (Activity) o;
+            if(this.startTime.isAfter(activity.startTime)){
+                return 1;
+            }
+        }
+        return -1;
     }
 }
